@@ -3,6 +3,7 @@ package cloudcomputing.tripfinder.Service;
 import cloudcomputing.tripfinder.Models.RequestTripObject;
 import cloudcomputing.tripfinder.Models.ResponseObject;
 import cloudcomputing.tripfinder.Models.Root;
+import cloudcomputing.tripfinder.Models.TripIdResponse;
 import cloudcomputing.tripfinder.clients.RandomNumberGeneratorClient;
 import cloudcomputing.tripfinder.clients.WeatherClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,17 @@ public class RandomNumberWeatherService {
         this.weatherClient = weatherClient;
     }
 
+    public TripIdResponse generateTripAndUserID(){
+        TripIdResponse tripIdResponse = new TripIdResponse();
+
+        String userId = randomNumberGeneratorClient.generateUserId();
+        String tripId = randomNumberGeneratorClient.generateTripId();
+
+        tripIdResponse.setUserID(userId);
+        tripIdResponse.setTripID(tripId);
+
+        return tripIdResponse;
+    }
     public ResponseObject getTripData(RequestTripObject requestTripObject){
 
         ResponseObject responseObject = new ResponseObject();

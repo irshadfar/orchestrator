@@ -23,8 +23,26 @@ public class RandomNumberGeneratorClient {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public String generateRandomNumber(){
-        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(config.getRandomIdServiceUrl());
+    public String generateUserId(){
+
+        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(config.getRandomIdServiceUrl())
+                .queryParam("min", "1000")
+                .queryParam("max", "10000")
+                .queryParam("count", "1");
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        ResponseEntity<List> forEntity = restTemplate.getForEntity(builder.toUriString(), List.class);
+
+        return forEntity.getBody().get(0).toString();
+    }
+
+    public String generateTripId(){
+
+        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(config.getRandomIdServiceUrl())
+                .queryParam("min", "10000")
+                .queryParam("max", "100000")
+                .queryParam("count", "1");
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

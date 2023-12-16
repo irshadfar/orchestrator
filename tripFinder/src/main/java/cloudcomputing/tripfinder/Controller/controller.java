@@ -4,6 +4,7 @@ package cloudcomputing.tripfinder.Controller;
 import cloudcomputing.tripfinder.Models.RequestTripObject;
 import cloudcomputing.tripfinder.Models.ResponseObject;
 import cloudcomputing.tripfinder.Models.Root;
+import cloudcomputing.tripfinder.Models.TripIdResponse;
 import cloudcomputing.tripfinder.Service.RandomNumberWeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -23,11 +24,10 @@ public class controller {
 
     /**
      * end point to register users*/
-    @GetMapping("/get-tripid")
-    public ResponseEntity registerUsers() {
+    @GetMapping("/trip-id")
+    public ResponseEntity<TripIdResponse> registerUsers() {
 
-//        return new ResponseEntity<>(randomNumberWeatherService.ge(), HttpStatus.OK);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<TripIdResponse>(randomNumberWeatherService.generateTripAndUserID(), HttpStatus.OK);
     }
 
     @PostMapping("/trip-data")
