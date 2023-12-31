@@ -7,7 +7,10 @@ import cloudcomputing.tripfinder.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
 
 @RestController
 @RequestMapping("/tripAdvisor")
@@ -22,7 +25,8 @@ public class Controller {
     }
 
     /**
-     * end point to register users*/
+     * end point to register users
+     */
     @GetMapping("/trip-id")
     public ResponseEntity<TripIdResponse> registerUsers() {
 
@@ -32,18 +36,29 @@ public class Controller {
     @PostMapping("/trip-data")
     public ResponseEntity<ResponseObject> getWeather(
             @RequestBody RequestTripObject requestTripObject
-            ){
+    ) {
         return new ResponseEntity<ResponseObject>(randomNumberWeatherService.getTripData(requestTripObject), HttpStatus.OK);
     }
 
 
     @PostMapping("/user-registration")
     public ResponseEntity<String> registerUser(
-            @RequestBody @Valid UserRegistrationData userRegistrationData){
+            @RequestBody @Valid UserRegistrationData userRegistrationData) {
 
         return new ResponseEntity<>(userService.registerData(userRegistrationData), HttpStatus.CREATED);
     }
 
 
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    private ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException exception) {
+
+        ExceptionResponse wrapper = new ExceptionResponse();
+        wrapper.setError(exception.getBindingResult().getFieldError().getDefaultMessage());
+        wrapper.setTimeStamp(String.valueOf(new Timestamp(System.currentTimeMillis())));
+        wrapper.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        return new ResponseEntity<>(wrapper, HttpStatus.BAD_REQUEST);
+    }
 
 }

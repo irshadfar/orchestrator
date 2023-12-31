@@ -20,10 +20,10 @@ public class UserRegistrationData {
     @Id
     @GeneratedValue
     private Long Id;
-    @NotEmpty
+    @NotEmpty(message = "name can not be empty")
     private String name;
-    @Email
+    @Email(message = "must be a valid email")
     private String email;
-    @NotEmpty
+    @NotEmpty(message = "password cannot be empty")
     private String password;
 }
