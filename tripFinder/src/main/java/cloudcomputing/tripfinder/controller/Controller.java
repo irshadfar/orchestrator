@@ -45,10 +45,15 @@ public class Controller {
     public ResponseEntity<String> registerUser(
             @RequestBody @Valid UserRegistrationData userRegistrationData) {
 
-        return new ResponseEntity<>(userService.registerData(userRegistrationData), HttpStatus.CREATED);
+        return userService.registerData(userRegistrationData);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login (
+            @RequestBody @Valid LoginUser loginUser) {
 
+        return userService.validateUser(loginUser);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException exception) {
