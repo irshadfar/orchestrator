@@ -1,25 +1,24 @@
-package cloudcomputing.tripfinder.Controller;
+package cloudcomputing.tripfinder.controller;
 
 
-import cloudcomputing.tripfinder.Models.RequestTripObject;
-import cloudcomputing.tripfinder.Models.ResponseObject;
-import cloudcomputing.tripfinder.Models.Root;
-import cloudcomputing.tripfinder.Models.TripIdResponse;
+import cloudcomputing.tripfinder.Models.*;
 import cloudcomputing.tripfinder.Service.RandomNumberWeatherService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
+import cloudcomputing.tripfinder.Service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tripAdvisor")
-public class controller {
+public class Controller {
 
-    private RandomNumberWeatherService randomNumberWeatherService;
+    private final RandomNumberWeatherService randomNumberWeatherService;
+    private final UserService userService;
 
-    public controller(RandomNumberWeatherService randomNumberWeatherService) {
+    public Controller(RandomNumberWeatherService randomNumberWeatherService, UserService userService) {
         this.randomNumberWeatherService = randomNumberWeatherService;
+        this.userService = userService;
     }
 
     /**
@@ -36,5 +35,15 @@ public class controller {
             ){
         return new ResponseEntity<ResponseObject>(randomNumberWeatherService.getTripData(requestTripObject), HttpStatus.OK);
     }
+
+
+    @PostMapping("/user-registration")
+    public ResponseEntity<String> registerUser(
+            @RequestBody @Valid UserRegistrationData userRegistrationData){
+
+        return new ResponseEntity<>(userService.registerData(userRegistrationData), HttpStatus.CREATED);
+    }
+
+
 
 }
