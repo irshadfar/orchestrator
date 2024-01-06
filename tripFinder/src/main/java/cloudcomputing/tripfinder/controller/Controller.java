@@ -28,12 +28,14 @@ public class Controller {
      * end point to register users
      */
     @GetMapping("/trip-id")
+    @CrossOrigin
     public ResponseEntity<TripIdResponse> registerUsers() {
 
         return new ResponseEntity<TripIdResponse>(randomNumberWeatherService.generateTripAndUserID(), HttpStatus.OK);
     }
 
     @PostMapping("/trip-data")
+    @CrossOrigin
     public ResponseEntity<ResponseObject> getWeather(
             @RequestBody RequestTripObject requestTripObject
     ) {
@@ -42,17 +44,19 @@ public class Controller {
 
 
     @PostMapping("/user-registration")
-    public ResponseEntity<String> registerUser(
+    @CrossOrigin
+    public ResponseEntity<LoginResponse> registerUser(
             @RequestBody @Valid UserRegistrationData userRegistrationData) {
 
-        return userService.registerData(userRegistrationData);
+        return new ResponseEntity<LoginResponse>(userService.registerData(userRegistrationData), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login (
+    @CrossOrigin
+    public ResponseEntity<LoginResponse> login (
             @RequestBody @Valid LoginUser loginUser) {
 
-        return userService.validateUser(loginUser);
+        return new ResponseEntity<LoginResponse>(userService.validateUser(loginUser), HttpStatus.OK);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

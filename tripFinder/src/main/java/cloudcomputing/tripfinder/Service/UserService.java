@@ -2,6 +2,7 @@ package cloudcomputing.tripfinder.Service;
 
 import cloudcomputing.tripfinder.Models.LoginUser;
 import cloudcomputing.tripfinder.Models.UserRegistrationData;
+import cloudcomputing.tripfinder.Models.LoginResponse;
 import cloudcomputing.tripfinder.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +17,31 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<String> registerData(UserRegistrationData userRegistrationData) {
-        userRepository.save(userRegistrationData);
-        return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+    public LoginResponse registerData(UserRegistrationData userRegistrationData) {
+        LoginResponse loginResponse = new LoginResponse();
+        try {
+            userRepository.save(userRegistrationData);
+            loginResponse.setLogin("User registered successfully");
+        } catch (Exception e) {
+            loginResponse.setLogin("User could not be registerd");
+        }
+        return loginResponse;
     }
 
-    public ResponseEntity<String> validateUser(LoginUser loginUser) {
+    public LoginResponse validateUser(LoginUser loginUser) {
+        LoginResponse response = new LoginResponse();
         try {
             UserRegistrationData userData = userRepository.findByEmail(loginUser.getEmail());
             if (userData.getPassword().equals(loginUser.getPassword())) {
-                return new ResponseEntity<>("Login successful", HttpStatus.OK);
+
+                response.setLogin("succss");
             } else {
-                return new ResponseEntity<>("Password is incorrect", HttpStatus.UNAUTHORIZED);
+                response.setLogin("Password is incorrect");
             }
         } catch (Exception e) {
-            return new ResponseEntity<>("User is not registered", HttpStatus.NOT_FOUND);
+            response.setLogin("User is not registered");
+            return response;
         }
+        return response;
     }
 }
