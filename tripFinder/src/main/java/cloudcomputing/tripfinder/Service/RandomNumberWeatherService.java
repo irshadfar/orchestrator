@@ -12,9 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RandomNumberWeatherService {
 
-
-    private RandomNumberGeneratorClient randomNumberGeneratorClient;
-    private WeatherClient weatherClient;
+    private final RandomNumberGeneratorClient randomNumberGeneratorClient;
+    private final WeatherClient weatherClient;
 
     @Autowired
     public RandomNumberWeatherService(RandomNumberGeneratorClient randomNumberGeneratorClient, WeatherClient weatherClient) {
@@ -22,22 +21,31 @@ public class RandomNumberWeatherService {
         this.weatherClient = weatherClient;
     }
 
+    /**
+     * generateTripAndUserID - this method is used to call gather the user id and trip is in one response
+     * */
     public TripIdResponse generateTripAndUserID(){
         TripIdResponse tripIdResponse = new TripIdResponse();
 
         String userId = randomNumberGeneratorClient.generateUserId();
         String tripId = randomNumberGeneratorClient.generateTripId();
 
+        //setting user id and trip is into one response
         tripIdResponse.setUserID(userId);
         tripIdResponse.setTripID(tripId);
 
         return tripIdResponse;
     }
+
+    /**
+     * getTripData - this method is used to get the weather details
+     * */
     public ResponseObject getTripData(RequestTripObject requestTripObject){
 
         ResponseObject responseObject = new ResponseObject();
         Root root = weatherClient.getWeatherInfo(requestTripObject);
 
+        // setting the response to return to front end
         responseObject.setTripId(requestTripObject.getTripId());
         responseObject.setUserId(requestTripObject.getUserId());
         responseObject.setLocation(requestTripObject.getLocation());

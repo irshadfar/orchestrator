@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @Getter
 @Setter
 public class Config {
+    //get urls for external APIs
     @Value("${random-id-service.url}")
     private String randomIdServiceUrl;
     @Value("${weather-forecast-service.url}")
@@ -38,9 +39,8 @@ public class Config {
     public void setWeatherForecastServiceUrl(String weatherForecastServiceUrl) {
         this.weatherForecastServiceUrl = weatherForecastServiceUrl;
     }
-
     @Bean
     public RestTemplate restTemplate(){
         return new RestTemplate();
-    };
+    }
 }

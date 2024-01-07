@@ -33,7 +33,9 @@ public class Controller {
 
         return new ResponseEntity<TripIdResponse>(randomNumberWeatherService.generateTripAndUserID(), HttpStatus.OK);
     }
-
+    /**
+     * end point to get trip data
+     */
     @PostMapping("/trip-data")
     @CrossOrigin
     public ResponseEntity<ResponseObject> getWeather(
@@ -42,7 +44,9 @@ public class Controller {
         return new ResponseEntity<ResponseObject>(randomNumberWeatherService.getTripData(requestTripObject), HttpStatus.OK);
     }
 
-
+    /**
+     * end point to register users
+     */
     @PostMapping("/user-registration")
     @CrossOrigin
     public ResponseEntity<LoginResponse> registerUser(
@@ -50,7 +54,9 @@ public class Controller {
 
         return new ResponseEntity<LoginResponse>(userService.registerData(userRegistrationData), HttpStatus.OK);
     }
-
+    /**
+     * end point to log-in users
+     */
     @PostMapping("/login")
     @CrossOrigin
     public ResponseEntity<LoginResponse> login (
@@ -59,6 +65,9 @@ public class Controller {
         return new ResponseEntity<LoginResponse>(userService.validateUser(loginUser), HttpStatus.OK);
     }
 
+    /**
+     * exception handling to validate request objects for registering and logging users
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException exception) {
 

@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class WeatherClient {
 
     private final RestTemplate restTemplate;
-    private Config config;
+    private final Config config;
 
     @Autowired
     public WeatherClient(RestTemplateBuilder restTemplateBuilder,
@@ -23,6 +23,9 @@ public class WeatherClient {
         this.config = config;
     }
 
+    /**
+     * getweatherInfo - method to get weather details
+     * */
     public Root getWeatherInfo(RequestTripObject requestTripObject){
         String baseUrl = config.getWeatherForecastServiceUrl();
         String finalUrl = createFinalUrl(baseUrl, requestTripObject);
@@ -33,9 +36,12 @@ public class WeatherClient {
         return response;
     }
 
+    /**
+     * createFinalUrl - this method creates the final url and parameters for weather api
+     * */
     private String createFinalUrl(String baseUrl, RequestTripObject requestTripObject) {
         return UriComponentsBuilder.fromUriString(baseUrl)
-                .queryParam("key","57e1df18065a486babb180350230412" )
+                .queryParam("key","162e69cab2da4f16b0c185535240601" )
                 .queryParam("q",requestTripObject.getLocation().replaceAll(" ","+"))
                 .queryParam("format", "JSON")
                 .queryParam("date", requestTripObject.getDateTime())
